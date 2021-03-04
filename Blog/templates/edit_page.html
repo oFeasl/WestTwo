@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <title>Blog</title>
+        <script src="https://unpkg.com/showdown@1.9.1/dist/showdown.min.js"></script>
+    </head>
+    <body>
+        <h1>You are [{{username}}]</h1>
+        <a href="/logout"><button>Logout</button></a>
+        <h1>You Can Modify Blog With BlogId[{{blogid}}] Now</h1>
+        <br>
+        <br>
+
+
+        <h1>Markdown Editor</h1>
+        <form action="" method="POST">
+            <input type="text" name="Title" value={{title}}>
+            <br>
+            <textarea name="text" id="oriContent" style="height:250px;width:600px;" onkeyup="convert()">{{body}}</textarea>
+            <input type="submit" value="Submit">
+        </form>
+        <h1>Preview is Below</h1>
+        <div id="result"></div>
+        <script>
+            var text = document.getElementById("oriContent").value;
+                var converter = new showdown.Converter();
+                var html = converter.makeHtml(text);
+                document.getElementById("result").innerHTML = html;
+            function convert(){
+                var text = document.getElementById("oriContent").value;
+                var converter = new showdown.Converter();
+                var html = converter.makeHtml(text);
+                document.getElementById("result").innerHTML = html;
+            }
+        </script>
+
+    </body>
+</html>

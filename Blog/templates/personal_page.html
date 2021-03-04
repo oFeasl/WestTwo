@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>It is Personal Page</h1>
+    <a href="/Main"><button>Back To Main</button></a><br>
+    <h1>username:{{username}}</h1>
+    <h1>intro:{{intro}}</h1>
+    <h1>avatar:</h1>
+
+    <img src="/static/avatars/{{avatar_path}}" alt="" style="height:50px;width:50px;">
+
+    <form action="" enctype='multipart/form-data' method="POST">
+        Username:<input type="text" value="{{username}}" name="username"><br>
+        Intro:<input type="text" value="{{intro}}" name="intro"><br>
+        <input type="file" name="avatar"><br>
+        <input type="submit">
+    </form>
+
+</body>
+</html>

@@ -1,0 +1,52 @@
+<html>
+    <head>
+        <title>Blog</title>
+        <script src="https://unpkg.com/showdown@1.9.1/dist/showdown.min.js"></script>
+    </head>
+    <body>
+        <h1>You are [{{username}}]</h1>
+        <a href="/Main"><button>Back To Main</button></a><br>
+        <h1>It is Doc[{{id}}]</h1>
+        <a href="/logout"><button>Logout</button></a>
+        <br>
+        <br>
+        <!-- <form action="" method="POST">
+            <input type="text" name="Title" value={{title}}>
+            <br>
+            <textarea name="text" id="oriContent" style="height:250px;width:600px;" onkeyup="convert()">{{body}}</textarea>
+            <input type="submit" value="Submit">
+        </form> -->
+        <h1>Title:</h1>
+        <h1>{{title}}</h1>
+        <h1>Main Body:</h1>
+        <div id="result"></div>
+        <script>
+            // function convert(){
+                var text = '{{body}}';
+                var converter = new showdown.Converter();
+                var html = converter.makeHtml(text);
+                document.getElementById("result").innerHTML = html;
+            // }
+        </script>
+
+        <form action="{{url_for('collect',doc_id=id)}}" method="POST">
+            <button type="submit">Collect</button>
+        </form>
+
+        <form action="{{url_for('like',doc_id=id)}}" method="POST">
+            <button type="submit">LIKE({{likenum}})</button>
+        </form>
+
+        <h1>Here are the comments:</h1>
+        {% for i in comments %}
+            <h1> user:{{commenter[loop.index-1]}} says:{{i}}</h1>
+        {% endfor %}
+    
+
+        <form action="{{url_for('coment',doc_id=id)}}" method="POST">
+            <input type="text" name="coment">
+            <button type="submit" name="Submit">Submit</button>
+        </form>
+
+    </body>
+</html>

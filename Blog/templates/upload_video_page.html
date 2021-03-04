@@ -1,0 +1,20 @@
+<html>
+    <head>
+        <title>Blog</title>
+        <script src="https://unpkg.com/showdown@1.9.1/dist/showdown.min.js"></script>
+    </head>
+    <body>
+        <h1>You are [{{username}}]</h1>
+        <a href="/Main"><button>Back To Main</button></a><br>
+
+        <a href="/logout"><button>Logout</button></a>
+
+        <h1>File Upload Here</h1>
+        <form action="" enctype='multipart/form-data' method='POST'>
+            Video Title:<input type="text" name="title"><br>
+            <input type="file" name="file">
+            <input type="submit" value="Upload">
+        </form>
+
+    </body>
+</html>

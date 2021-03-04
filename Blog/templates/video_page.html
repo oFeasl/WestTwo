@@ -1,0 +1,54 @@
+<h1>It is Video[{{video_id}}]</h1>
+<div id="dplayer" style="height:500px;width:800px;"></div>
+<!-- <script src="E:\Document\PSN\test_Flask\static\js\DPlayer.min.js"></script> -->
+<script src="/static/js/DPlayer.min.js"></script>
+<script>
+const dp = new DPlayer({
+    container: document.getElementById('dplayer'),
+    video: {
+        url: "/static/video/{{video_name}}" ,
+    },
+    // autoplay:true,
+    lang:'en',
+    volume:0.5,
+    contextmenu:[
+        {
+            text:'Hello?',
+            link: 'https://github.com/DIYgod/DPlayer',
+        },
+        {
+            text:'click on me!',
+            click: () => {
+                dp.play()
+            },
+        }
+    ],
+    danmaku: {                                                         // 可选，显示弹幕，忽略此选项以隐藏弹幕
+        id: '9E2E312312356CDBB4'+'{{video_id}}',                                        // 必需，弹幕 id，注意：它必须是唯一的，不能在你的新播放器
+        api: 'https://dplayer.moerats.com/',                             // 必需，弹幕 api
+        token: 'tokendemo',                                            // 可选，api 的弹幕令牌
+        maximum: 1000,                                                 // 可选，最大数量的弹幕
+    }
+
+});
+</script>
+
+
+<script>
+    function c(){
+        dp.danmaku.send(
+    {
+        text: document.getElementById("input_text").value,
+    },
+    function () {
+        console.log('success');
+    }
+);
+} 
+</script>
+
+<input type="text" value="发个友善的弹幕见证当下" id="input_text">
+<button onclick="c()">发送</button>
+
+<button onclick="dp.danmaku.hide()">关弹幕</button>
+<button onclick="dp.danmaku.show()">开弹幕</button>

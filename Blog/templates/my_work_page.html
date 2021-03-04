@@ -1,0 +1,25 @@
+<html>
+    <head>
+        <script>
+            function a(id_num){
+                return("/edit/"+id_num)
+            }
+        </script>
+    </head>
+    <body>
+        <h1>Here are your works</h1>
+        <a href="/Main"><button>Back To Main</button></a><br>
+        
+        {% for i in blog %}
+            <a href="" id=blog{{loop.index}}> {{loop.index}} {{i}}</a><form action="{{url_for('Del_Doc',doc_id=blog_id[loop.index-1])}} " method="POST">
+                <button type="submit">del</button>
+            </form>
+            <script>
+                document.getElementById('blog{{loop.index}}').setAttribute('href',a({{blog_id[loop.index-1]}}))
+            </script>
+            <br>
+            <br>
+        {% endfor %}
+        
+    </body>
+</html>
