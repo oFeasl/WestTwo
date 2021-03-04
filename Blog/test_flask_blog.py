@@ -305,7 +305,7 @@ def like(doc_id):
     return redirect(url_for('browse',id=doc_id))
 
 
-# coment
+# comment
 @app.route('/coment/<int:doc_id>',methods=["POST"])
 def coment(doc_id):
     forwhich=doc_id
