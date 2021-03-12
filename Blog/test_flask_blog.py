@@ -118,6 +118,7 @@ def personal():
 @app.route('/logout',methods=["GET"])
 def logout():
     del session['username']
+    del session['id']
     return redirect(url_for('login'))
 
 
