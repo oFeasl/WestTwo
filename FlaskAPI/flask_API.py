@@ -62,7 +62,7 @@ def display_tasks():
 
 
 # 删除接口，返回data中带有删除的task
-@app.route("/del_task/<int:id>")
+@app.route("/del_task/<int:id>",methods=["DELETE"])
 def del_task(id):
     for i in tasks :
         if i["id"]==id:
