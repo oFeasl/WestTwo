@@ -114,8 +114,8 @@ def add_task():
 def set_a_done_(id):
     for i in tasks:
         if i["id"] == id:
-            i["done"] == True
-            return jsonify(return_Feedback(status=0,message="",data=tasks[id]))
+            i["done"] = True
+            return jsonify(return_Feedback(status=0,message="",data=i))
     return jsonify(return_Feedback(status=1,message="Id Not Found",data={}))
 
 # 将1条task设为待办
@@ -123,8 +123,8 @@ def set_a_done_(id):
 def set_a_undone_(id):
     for i in tasks:
         if i["id"] == id:
-            i["done"] == False
-            return jsonify(return_Feedback(status=0,message="",data=tasks[id]))
+            i["done"] = False
+            return jsonify(return_Feedback(status=0,message="",data=i))
     return jsonify(return_Feedback(status=1,message="Id Not Found",data={}))
 
 
@@ -134,7 +134,7 @@ def set_a_undone_(id):
 def set_all_done_():
     for i in tasks:
         i["done"]=True
-    return jsonify(return_Feedback(status=0,message="",data=[id]))
+    return jsonify(return_Feedback(status=0,message="All Tasks Are Done",data={}))
 
 
 
@@ -143,7 +143,7 @@ def set_all_done_():
 def set_all_undone_():
     for i in tasks:
         i["done"]=False
-    return jsonify(return_Feedback(status=0,message="",data={}))
+    return jsonify(return_Feedback(status=0,message="All Tasks Are Undone",data={}))
 
 
 
