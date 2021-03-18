@@ -56,7 +56,7 @@ def index():
     abort(404)
     
 
-@app.route("/display_tasks")
+@app.route("/display_tasks",methods=["GET"])
 def display_tasks():
     return jsonify(tasks)
 
@@ -91,6 +91,8 @@ def add_task():
 @app.errorhandler(404)
 def nofound(error):
     return jsonify(errors[0])
+
+
 
 if __name__=="__main__":
     app.run(debug=1)
