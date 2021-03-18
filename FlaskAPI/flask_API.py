@@ -1,5 +1,6 @@
 from flask import Flask,redirect,url_for
 from flask import json
+from flask.globals import request
 from flask.json import jsonify
 from werkzeug.exceptions import abort
 
@@ -9,13 +10,13 @@ tasks = [
     {
         'id': 1,
         'title': u'Buy groceries',
-        'description': u'Milk, Cheese, Pizza, Fruit, Tylenol',
+        'state': u'Milk, Cheese, Pizza, Fruit, Tylenol',
         'done': False
     },
     {
         'id': 2,
         'title': u'Learn Python',
-        'description': u'Need to find a good Python tutorial on the web',
+        'state': u'Need to find a good Python tutorial on the web',
         'done': False
     }
 ]
@@ -43,6 +44,10 @@ status = [
     {
         "code":2,
         "state":"Id No Found!"
+    },
+    {
+        "code":3,
+        "state":"Add Failed!"
     }
 ]
 
@@ -56,13 +61,30 @@ def display_tasks():
     return jsonify(tasks)
 
 
+# 删除接口，返回data中带有删除的task
 @app.route("/del_task/<int:id>")
 def del_task(id):
     for i in tasks :
         if i["id"]==id:
+            del_task = i
             tasks.remove(i)
-            return redirect(url_for("display_tasks"))
+            return jsonify({"status":0,"message":"删除成功","data":del_task})
     return jsonify(status[1])
+
+
+# 新增task接口，返回data中带有新增的task
+@app.route("/add_task",methods=["POST"])
+def add_task():
+    if not request.json or not 'title' in request.json:
+        return jsonify(status[2])
+    task={
+        "id":tasks[-1]["id"]+1,
+        "title":request.json["title"],
+        'state': request.json.get("state", ""),
+        "done":False
+    }
+    tasks.append(task)
+    return jsonify({"status":0,"message":"添加成功","data":task})
 
 
 
