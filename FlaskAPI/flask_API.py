@@ -1,4 +1,5 @@
 from flask import Flask
+from flask import json
 from flask.json import jsonify
 from werkzeug.exceptions import abort
 
@@ -24,8 +25,14 @@ def index():
     abort(404)
     return jsonify(tasks)
 
+@app.route("/display_tasks")
+def display_tasks():
+    return jsonify(tasks)
+
+
+
 @app.errorhandler(404)
-def nofound():
+def nofound(error):
     return "NoFound"
 
 if __name__=="__main__":
