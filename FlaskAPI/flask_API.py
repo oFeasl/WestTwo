@@ -51,6 +51,8 @@ status = [
     }
 ]
 
+
+
 @app.route("/")
 def index():
     abort(404)
@@ -84,7 +86,43 @@ def add_task():
         "done":False
     }
     tasks.append(task)
-    return jsonify({"status":0,"message":"添加成功","data":task})
+    return jsonify(return_Feedback(status=0,message=""))
+
+# 将1条task设为已办
+@app.route("/set_a_done/<int:id>",methods=["PUT"])
+def set_a_done_(id):
+    for i in tasks:
+        if i["id"] == id:
+            i["done"] == True
+            return jsonify()
+    return
+
+# 将1条task设为待办
+@app.route("/set_a_undone/<int:id>",methods=["PUT"])
+def set_a_undone_(id):
+    for i in tasks:
+        if i["id"] == id:
+            i["done"] == False
+            return jsonify()
+    return
+
+
+
+# 将所有task设为已办
+@app.route("/set_all_done",methods=["PUT"])
+def set_all_done_():
+    for i in tasks:
+        i["done"]=True
+    return
+
+
+
+# 将所有task设为待办
+@app.route("/set_all_undone",methods=["PUT"])
+def set_all_undone_():
+    for i in tasks:
+        i["done"]=False
+    return
 
 
 
@@ -92,7 +130,16 @@ def add_task():
 def nofound(error):
     return jsonify(errors[0])
 
-
+def return_Feedback(status,message,data):
+    Feedback = {
+        "status"  : 0,
+        "message" :" ",
+        "data"    : " "
+    }
+    Feedback["status"]=status
+    Feedback["message"]=message
+    Feedback["data"]=data
+    return Feedback
 
 if __name__=="__main__":
     app.run(debug=1)
