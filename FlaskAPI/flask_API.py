@@ -11,32 +11,37 @@ tasks = [
         'id': 1,
         'title': u'Buy groceries',
         'state': u'Milk, Cheese, Pizza, Fruit, Tylenol',
-        'done': False
+        'done': False,
+        'owner':1
     },
     {
         'id': 2,
         'title': u'Learn Python',
         'state': u'Need to find a good Python tutorial on the web',
-        'done': False
+        'done': False,
+        'owner':1
     },
     {
         'id': 3,
         'title': u'Test_title_3',
         'state': u'Test_state_3',
-        'done': False
+        'done': False,
+        'owner':2
+    }
+]
+
+
+users = [
+    {
+        'id':1,
+        'username':'1',
+        'password':'1'
     },
     {
-        'id': 4,
-        'title': u'Test_title_4',
-        'state': u'Test_state_4',
-        'done': False
-    },
-    {
-        'id': 5,
-        'title': u'Test_title_5',
-        'state': u'Test_state_5',
-        'done': False
-    },
+        'id':2,
+        'username':'2',
+        'password':'2'
+    }
 ]
 
 errors = [
