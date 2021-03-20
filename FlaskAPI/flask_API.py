@@ -36,6 +36,11 @@ tasks = [
 
 users = [
     {
+        'id':0,
+        'username':'0',
+        'password':'0'
+    },
+    {
         'id':1,
         'username':'1',
         'password':'1'
@@ -89,6 +94,30 @@ users = [
         'password':'2'
     }
 ]
+
+@app.route('/root/all_users')
+def root_all_users():
+    token_result = judge_token(request.headers)
+    if token_result == False:
+        return jsonify(return_Feedback(status=1,message="Have Not Login",data=""))
+    user_id=token_result['id']
+    if (user_id!=0):
+        abort(401)
+    for i in users:
+        print(i)
+
+
+@app.route('/root/all_tasks')
+def root_all_tasks():
+    token_result = judge_token(request.headers)
+    if token_result == False:
+        return jsonify(return_Feedback(status=1,message="Have Not Login",data=""))
+    user_id=token_result['id']
+    if (user_id!=0):
+        abort(401)
+    for i in tasks:
+        print(i)
+
 
 @app.route("/")
 def index():
