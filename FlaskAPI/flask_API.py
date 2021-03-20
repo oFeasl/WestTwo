@@ -92,23 +92,39 @@ users = [
 
 @app.route("/")
 def index():
+    token_result = judge_token(request.headers)
+    
     abort(404)
     
 
 @app.route("/display_tasks",methods=["GET"])
 def display_tasks():
-    return jsonify(tasks)
+    token_result = judge_token(request.headers)
+    if token_result == False:
+        return jsonify(return_Feedback(status=1,message="Have Not Login",data=""))
+    user_id=token_result['id']
 
 
-
+    
+    my_tasks=[]
+    for i in tasks:
+        if i['owner'] == user_id:
+            my_tasks.append(i)
+    return jsonify(my_tasks)
 
 #####################删除###########################
 
 # 删除接口，返回data中带有删除的task
 @app.route("/del_task/<int:id>",methods=["DELETE"])
 def del_task(id):
+    token_result = judge_token(request.headers)
+    if token_result == False:
+        return jsonify(return_Feedback(status=1,message="Have Not Login",data=""))
+    user_id=token_result['id']
+
+
     for i in tasks :
-        if i["id"]==id:
+        if i["id"]==id and i["owner"]==user_id:
             del_task = i
             tasks.remove(i)
             return jsonify(return_Feedback(status=0,message="删除成功",data=del_task))
@@ -118,9 +134,14 @@ def del_task(id):
 # 删除所有已完成事项
 @app.route("/del_all_done",methods=["DELETE"])
 def del_all_done():
+    token_result = judge_token(request.headers)
+    if token_result == False:
+        return jsonify(return_Feedback(status=1,message="Have Not Login",data=""))
+    user_id=token_result['id']
+
     temp_task1 = []
     for i in tasks:
-        if i["done"] == True:
+        if i["done"] == True and i["owner"]==user_id:
             temp_task1.append(i)
     for j in temp_task1:
         tasks.remove(j)
@@ -130,6 +151,12 @@ def del_all_done():
 # 删除所有已代办事项
 @app.route("/del_all_undone",methods=["DELETE"])
 def del_all_undone():
+    token_result = judge_token(request.headers)
+    if token_result == False:
+        return jsonify(return_Feedback(status=1,message="Have Not Login",data=""))
+    user_id=token_result['id']
+
+
     temp_task2 = []
     for i in tasks:
         if i["done"] == False:
@@ -157,6 +184,12 @@ def get():
 # 新增task接口，返回data中带有新增的task
 @app.route("/add_task",methods=["POST"])
 def add_task():
+    token_result = judge_token(request.headers)
+    if token_result == False:
+        return jsonify(return_Feedback(status=1,message="Have Not Login",data=""))
+    user_id=token_result['id']
+
+
     if not request.json or not 'title' in request.json:
         return jsonify(status[2])
     task={
@@ -183,6 +216,13 @@ def add_task():
 # 将1条task设为已办
 @app.route("/set_a_done/<int:id>",methods=["PUT"])
 def set_a_done_(id):
+    token_result = judge_token(request.headers)
+    if token_result == False:
+        return jsonify(return_Feedback(status=1,message="Have Not Login",data=""))
+    user_id=token_result['id']
+
+
+
     for i in tasks:
         if i["id"] == id:
             i["done"] = True
@@ -192,6 +232,13 @@ def set_a_done_(id):
 # 将1条task设为待办
 @app.route("/set_a_undone/<int:id>",methods=["PUT"])
 def set_a_undone_(id):
+    token_result = judge_token(request.headers)
+    if token_result == False:
+        return jsonify(return_Feedback(status=1,message="Have Not Login",data=""))
+    user_id=token_result['id']
+
+
+
     for i in tasks:
         if i["id"] == id:
             i["done"] = False
@@ -201,6 +248,13 @@ def set_a_undone_(id):
 # 将所有task设为已办
 @app.route("/set_all_done",methods=["PUT"])
 def set_all_done_():
+    token_result = judge_token(request.headers)
+    if token_result == False:
+        return jsonify(return_Feedback(status=1,message="Have Not Login",data=""))
+    user_id=token_result['id']
+
+
+
     for i in tasks:
         i["done"]=True
     return jsonify(return_Feedback(status=0,message="All Tasks Are Done",data={}))
@@ -208,6 +262,13 @@ def set_all_done_():
 # 将所有task设为待办
 @app.route("/set_all_undone",methods=["PUT"])
 def set_all_undone_():
+    token_result = judge_token(request.headers)
+    if token_result == False:
+        return jsonify(return_Feedback(status=1,message="Have Not Login",data=""))
+    user_id=token_result['id']
+
+
+
     for i in tasks:
         i["done"]=False
     return jsonify(return_Feedback(status=0,message="All Tasks Are Undone",data={}))
@@ -257,18 +318,29 @@ def regist():
 @app.route("/login",methods=["POST"])
 def login():
     print(request.json)
-    if not request.json or not "username" in request.json or not "password" in request.json:
+    if not request.json or not "username" in request.json or not "password" in request.json:# 格式错误
         return jsonify(return_Feedback(status=1,message="Form Error",data=""))
-    for i in users:
+    for i in users:# 遍历用户列表
         if i["username"] == request.json["username"] and i["password"]==request.json["password"]:
-            return {"user":request.json,"token":get_token(user_id=i["id"])}
-    return jsonify(return_Feedback(status=1,message="Login Error",data=""))
+            return {"user":request.json,"token":get_token(user_id=i["id"],user_name=i["username"],user_pwd=i["password"])} # 认证成功
+    return jsonify(return_Feedback(status=1,message="Login Error",data=""))# 没有这个用户
     
 
-def get_token(user_id):
+def get_token(user_id,user_name,user_pwd):
     s = Serializer(secret_key=app.config["SECRET_KEY"],expires_in=3600)
-    token = s.dumps({"id":user_id}).decode("ascii")
+    token = s.dumps({"id":user_id,"username":user_name,"password":user_pwd}).decode("ascii")
     return token
+
+
+def judge_token(headers):
+    try:
+        token = headers["token"]
+        s = Serializer(app.config["SECRET_KEY"],1800)
+        token_result = s.loads(token)
+        return token_result
+    except:
+        return False
+
 #######################登录#########################
 
 @app.errorhandler(404)

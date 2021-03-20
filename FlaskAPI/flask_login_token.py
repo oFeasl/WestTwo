@@ -3,6 +3,7 @@ from flask.globals import current_app
 from flask.json import jsonify
 from werkzeug.exceptions import abort
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+# from flask_httpauth import HTTPTokenAuth
 
 
 app = Flask(__name__)
@@ -27,9 +28,13 @@ def wel_page():
     return "Welcome_page"
 
 
-@app.route("/have_login",methods=["GET"])
+@app.route("/have_login",methods=["POST"])
 def have_login():
-    return "You have login"
+    respond = judge_token(request.headers)
+    if respond == False:
+        return "Error"
+    return "ID="+(str)(respond)
+
 
 
 @app.route("/regist",methods=["POST"])
@@ -66,9 +71,20 @@ def login():
     return "Error 2"
     
 def create_token(user_id):
-    s = Serializer(current_app.config["SECRET_KEY"],expires_in=3600)
+    s = Serializer(current_app.config["SECRET_KEY"],expires_in=1800)
     token = s.dumps({"id":user_id}).decode("ascii")
     return token
+
+
+def judge_token(headers):
+    try:
+        token = headers["token"]
+        s = Serializer(app.config["SECRET_KEY"],1800)
+        datas = s.loads(token)
+        return datas["id"] 
+    except:
+        return False
+
 
 if __name__ == "__main__":
     app.run(debug=1)
