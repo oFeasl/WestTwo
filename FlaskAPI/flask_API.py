@@ -82,18 +82,6 @@ status = [
     }
 ]
 
-users = [
-    {
-        'id':1,
-        'username':'1',
-        'password':'1'
-    },
-    {
-        'id':2,
-        'username':'2',
-        'password':'2'
-    }
-]
 
 @app.route('/root/all_users')
 def root_all_users():
@@ -103,8 +91,7 @@ def root_all_users():
     user_id=token_result['id']
     if (user_id!=0):
         abort(401)
-    for i in users:
-        print(i)
+    return jsonify(return_Feedback(status=0,message="Welcome Root",data=users))
 
 
 @app.route('/root/all_tasks')
@@ -115,8 +102,9 @@ def root_all_tasks():
     user_id=token_result['id']
     if (user_id!=0):
         abort(401)
-    for i in tasks:
-        print(i)
+    return jsonify(return_Feedback(status=0,message="Welcome Root",data=tasks))
+
+
 
 
 @app.route("/")
@@ -124,7 +112,9 @@ def index():
     token_result = judge_token(request.headers)
     
     abort(404)
-    
+
+
+
 
 @app.route("/display_tasks",methods=["GET"])
 def display_tasks():
@@ -142,6 +132,8 @@ def display_tasks():
     return jsonify(my_tasks)
 
 #####################删除###########################
+
+
 
 # 删除接口，返回data中带有删除的task
 @app.route("/del_task/<int:id>",methods=["DELETE"])
@@ -353,7 +345,7 @@ def login():
     if not request.json or not "username" in request.json or not "password" in request.json:# 格式错误
         return jsonify(return_Feedback(status=1,message="Form Error",data=""))
     for i in users:# 遍历用户列表
-        if i["username"] == request.json["username"] and i["password"]==request.json["password"]:
+        if i["username"] == request.json["username"] and i["password"] == request.json["password"]:
             return {"user":request.json,"token":get_token(user_id=i["id"],user_name=i["username"],user_pwd=i["password"])} # 认证成功
     return jsonify(return_Feedback(status=1,message="Login Error",data=""))# 没有这个用户
     
