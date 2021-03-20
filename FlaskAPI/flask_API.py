@@ -3,8 +3,11 @@ from flask import json
 from flask.globals import request
 from flask.json import jsonify
 from werkzeug.exceptions import abort
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 app = Flask(__name__)
+app.config["SECRET_KEY"] = "dsaiwe982nzcxsa79e812dsa"
+
 
 tasks = [
     {
@@ -74,7 +77,18 @@ status = [
     }
 ]
 
-
+users = [
+    {
+        'id':1,
+        'username':'1',
+        'password':'1'
+    },
+    {
+        'id':2,
+        'username':'2',
+        'password':'2'
+    }
+]
 
 @app.route("/")
 def index():
@@ -129,8 +143,13 @@ def del_all_undone():
 
 
 
-
-
+@app.route("/get")
+def get():
+    print(request.method)
+    print(request.json)
+    print(request.headers)
+    print(request.host)
+    print(request.url)
 
 #######################新增#########################
 
@@ -209,6 +228,48 @@ def set_all_undone_():
 #######################查找#########################
 
 
+
+
+#######################注册#########################
+@app.route("/regist",methods=["POST"])
+def regist():
+    if not request.json or not "username" in request.json or not "password" in request.json:
+        abort(400)
+    user_id = users[-1]['id']+1
+    user_username = request.json['username']
+    user_password = request.json['password']
+
+    user = {
+        'id' : user_id,
+        'username' : user_username,
+        'password' : user_password
+    }
+
+    users.append(user)
+    return jsonify(user)
+#######################注册#########################
+
+
+
+
+
+#######################登录#########################
+@app.route("/login",methods=["POST"])
+def login():
+    print(request.json)
+    if not request.json or not "username" in request.json or not "password" in request.json:
+        return jsonify(return_Feedback(status=1,message="Form Error",data=""))
+    for i in users:
+        if i["username"] == request.json["username"] and i["password"]==request.json["password"]:
+            return {"user":request.json,"token":get_token(user_id=i["id"])}
+    return jsonify(return_Feedback(status=1,message="Login Error",data=""))
+    
+
+def get_token(user_id):
+    s = Serializer(secret_key=app.config["SECRET_KEY"],expires_in=3600)
+    token = s.dumps({"id":user_id}).decode("ascii")
+    return token
+#######################登录#########################
 
 @app.errorhandler(404)
 def nofound(error):
