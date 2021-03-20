@@ -159,7 +159,7 @@ def del_all_undone():
 
     temp_task2 = []
     for i in tasks:
-        if i["done"] == False:
+        if i["done"] == False and i["owner"]==user_id:
             temp_task2.append(i)
     for j in temp_task2:
         tasks.remove(j)
@@ -196,7 +196,8 @@ def add_task():
         "id":tasks[-1]["id"]+1,
         "title":request.json["title"],
         'state': request.json.get("state", ""),
-        "done":False
+        "done":False,
+        "owner":user_id
     }
     tasks.append(task)
     return jsonify(return_Feedback(status=0,message="",data=task))
@@ -224,7 +225,7 @@ def set_a_done_(id):
 
 
     for i in tasks:
-        if i["id"] == id:
+        if i["id"] == id and i["owner"]==user_id:
             i["done"] = True
             return jsonify(return_Feedback(status=0,message="",data=i))
     return jsonify(return_Feedback(status=1,message="Id Not Found",data={}))
@@ -240,7 +241,7 @@ def set_a_undone_(id):
 
 
     for i in tasks:
-        if i["id"] == id:
+        if i["id"] == id and i["owner"]==user_id:
             i["done"] = False
             return jsonify(return_Feedback(status=0,message="",data=i))
     return jsonify(return_Feedback(status=1,message="Id Not Found",data={}))
@@ -256,7 +257,8 @@ def set_all_done_():
 
 
     for i in tasks:
-        i["done"]=True
+        if i["owner"]==user_id:
+            i["done"]=True
     return jsonify(return_Feedback(status=0,message="All Tasks Are Done",data={}))
 
 # 将所有task设为待办
@@ -270,7 +272,8 @@ def set_all_undone_():
 
 
     for i in tasks:
-        i["done"]=False
+        if i["owner"]==user_id:
+            i["done"]=False
     return jsonify(return_Feedback(status=0,message="All Tasks Are Undone",data={}))
 
 #######################更改#########################
