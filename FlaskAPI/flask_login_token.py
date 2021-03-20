@@ -1,8 +1,6 @@
 from flask import Flask,request
 from flask.json import jsonify
 from werkzeug.exceptions import abort
-from flask.ext.httpauth import HTTPBasicAuth
-auth = HTTPBasicAuth()
 app = Flask(__name__)
 
 
@@ -24,12 +22,11 @@ def wel_page():
     return "Welcome_page"
 
 
-@login
 @app.route("/have_login",methods=["GET"])
 def have_login():
     return "You have login"
 
-@app.route("/login",methods=["POST"])
+@app.route("/regist",methods=["POST"])
 def login():
     if not request.json or request.json["username"] == None or request.json["password"] == None:
         abort(400)
@@ -44,8 +41,8 @@ def login():
     }
 
     users.append(user)
+    return jsonify(user)
 
-    return "Test"
 
 @app.route("/all_users",methods=["GET"])
 def all_users():
