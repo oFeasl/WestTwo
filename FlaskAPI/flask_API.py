@@ -30,7 +30,7 @@ tasks = [
         'title': u'Test_title_3',
         'state': u'Test_state_3',
         'done': False,
-        'owner':2
+        'owner':1
     },
     {
         'id': 4,
@@ -44,35 +44,35 @@ tasks = [
         'title': u'Test_title_3',
         'state': u'Test_state_3',
         'done': False,
-        'owner':7
+        'owner':1
     },
     {
         'id': 6,
         'title': u'Test_title_3',
         'state': u'Test_state_3',
         'done': False,
-        'owner':6
+        'owner':1
     },
     {
         'id': 7,
         'title': u'Test_title_3',
         'state': u'Test_state_3',
         'done': False,
-        'owner':5
+        'owner':1
     },
     {
         'id': 8,
         'title': u'Test_title_3',
         'state': u'Test_state_3',
         'done': False,
-        'owner':4
+        'owner':1
     },
     {
         'id': 9,
         'title': u'Test_title_3',
         'state': u'Test_state_3',
         'done': False,
-        'owner':2
+        'owner':1
     },
     {
         'id': 10,
@@ -86,21 +86,21 @@ tasks = [
         'title': u'Test_title_3',
         'state': u'Test_state_3',
         'done': False,
-        'owner':7
+        'owner':1
     },
     {
         'id': 12,
         'title': u'Test_title_3',
         'state': u'Test_state_3',
         'done': False,
-        'owner':6
+        'owner':1
     },
     {
         'id': 13,
         'title': u'Test_title_3',
         'state': u'Test_state_3',
         'done': False,
-        'owner':5
+        'owner':1
     },
     {
         'id': 14,
