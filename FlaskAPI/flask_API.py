@@ -18,8 +18,8 @@ tasks = [
         'state': u'Milk, Cheese, Pizza, Fruit, Tylenol',
         'done': False,
         'owner':1,
-        'start_time':'',
-        'end_time':''
+        'start_time':'2019.1.1',
+        'end_time':'2019.1.2'
     },
     {
         'id': 2,
@@ -27,188 +27,17 @@ tasks = [
         'state': u'Need to find a good Python tutorial on the web',
         'done': False,
         'owner':1,
-        'start_time':'',
-        'end_time':''
+        'start_time':'2019.2.1',
+        'end_time':'2019.2.2'
     },
     {
         'id': 3,
         'title': u'Test_title_3',
         'state': u'Test_state_3',
         'done': False,
-        'owner':1,
-        'start_time':'',
-        'end_time':''
-    
-    },
-    {
-        'id': 4,
-        'title': u'Test_title_4',
-        'state': u'Test_state_4',
-        'done': False,
-        'owner':3,
-        'start_time':'',
-        'end_time':''
-    
-    },
-    {
-        'id': 5,
-        'title': u'Test_title_3',
-        'state': u'Test_state_3',
-        'done': False,
-        'owner':1,
-        'start_time':'',
-        'end_time':''
-    
-    },
-    {
-        'id': 6,
-        'title': u'Test_title_3',
-        'state': u'Test_state_3',
-        'done': False,
-        'owner':1,
-        'start_time':'',
-        'end_time':''
-    
-    },
-    {
-        'id': 7,
-        'title': u'Test_title_3',
-        'state': u'Test_state_3',
-        'done': False,
-        'owner':1,
-        'start_time':'',
-        'end_time':''
-    
-    },
-    {
-        'id': 8,
-        'title': u'Test_title_3',
-        'state': u'Test_state_3',
-        'done': False,
-        'owner':1,
-        'start_time':'',
-        'end_time':''
-    
-    },
-    {
-        'id': 9,
-        'title': u'Test_title_3',
-        'state': u'Test_state_3',
-        'done': False,
-        'owner':1,
-        'start_time':'',
-        'end_time':''
-    
-    },
-    {
-        'id': 10,
-        'title': u'Test_title_3',
-        'state': u'Test_state_3',
-        'done': False,
-        'owner':8,
-        'start_time':'',
-        'end_time':''
-    
-    },
-    {
-        'id': 11,
-        'title': u'Test_title_3',
-        'state': u'Test_state_3',
-        'done': False,
-        'owner':1,
-        'start_time':'',
-        'end_time':''
-    
-    },
-    {
-        'id': 12,
-        'title': u'Test_title_3',
-        'state': u'Test_state_3',
-        'done': False,
-        'owner':1,
-        'start_time':'',
-        'end_time':''
-    
-    },
-    {
-        'id': 13,
-        'title': u'Test_title_3',
-        'state': u'Test_state_3',
-        'done': False,
-        'owner':1,
-        'start_time':'',
-        'end_time':''
-    
-    },
-    {
-        'id': 14,
-        'title': u'Test_title_3',
-        'state': u'Test_state_3',
-        'done': False,
-        'owner':4,
-        'start_time':'',
-        'end_time':''
-    
-    },
-    {
-        'id': 15,
-        'title': u'Test_title_3',
-        'state': u'Test_state_3',
-        'done': False,
-        'owner':1,
-        'start_time':'',
-        'end_time':''
-    
-    },
-    {
-        'id': 16,
-        'title': u'Test_title_3',
-        'state': u'Test_state_3',
-        'done': False,
-        'owner':3,
-        'start_time':'',
-        'end_time':''
-    
-    },
-    {
-        'id': 17,
-        'title': u'Test_title_3',
-        'state': u'Test_state_3',
-        'done': False,
-        'owner':8,
-        'start_time':'',
-        'end_time':''
-    
-    },
-    {
-        'id': 18,
-        'title': u'Test_title_3',
-        'state': u'Test_state_3',
-        'done': False,
-        'owner':4,
-        'start_time':'',
-        'end_time':''
-    
-    },
-    {
-        'id': 19,
-        'title': u'Test_title_3',
-        'state': u'Test_state_3',
-        'done': False,
-        'owner':3,
-        'start_time':'',
-        'end_time':''
-    
-    },
-    {
-        'id': 20,
-        'title': u'Test_title_3',
-        'state': u'Test_state_3',
-        'done': False,
-        'owner':6,
-        'start_time':'',
-        'end_time':''
-    
+        'owner':2,
+        'start_time':'2019.3.1',
+        'end_time':'2019.3.2'
     }
 ]
 
@@ -459,9 +288,11 @@ def add_task():
         'state': request.json.get("state", ""),
         "done":False,
         "owner":user_id,
-        "time":current_time
+        "start_time":current_time,
+        "end_time":request.json.get("end_time","")
     }
     tasks.append(task)
+    # print(tasks)
     return jsonify(return_Feedback(status=0,message="",data=task))
 #######################新增#########################
 
@@ -694,8 +525,6 @@ def display_undone_tasks():
     }
     return jsonify(return_Feedback(status=0,message=info,data=tasks_in_this_page))
 
-# @app.route("/display_certain_tasks",methods=["GET"])
-# def display_certain_tasks():
 
 #######################查找#########################
 

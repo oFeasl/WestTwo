@@ -1,0 +1,285 @@
+
+tasks = [
+    {
+        'id': 1,
+        'title': u'Buy groceries',
+        'state': u'Milk, Cheese, Pizza, Fruit, Tylenol',
+        'done': False,
+        'owner':1,
+        'start_time':'',
+        'end_time':''
+    },
+    {
+        'id': 2,
+        'title': u'Learn Python',
+        'state': u'Need to find a good Python tutorial on the web',
+        'done': False,
+        'owner':1,
+        'start_time':'',
+        'end_time':''
+    },
+    {
+        'id': 3,
+        'title': u'Test_title_3',
+        'state': u'Test_state_3',
+        'done': False,
+        'owner':1,
+        'start_time':'',
+        'end_time':''
+    
+    },
+    {
+        'id': 4,
+        'title': u'Test_title_4',
+        'state': u'Test_state_4',
+        'done': False,
+        'owner':3,
+        'start_time':'',
+        'end_time':''
+    
+    },
+    {
+        'id': 5,
+        'title': u'Test_title_3',
+        'state': u'Test_state_3',
+        'done': False,
+        'owner':1,
+        'start_time':'',
+        'end_time':''
+    
+    },
+    {
+        'id': 6,
+        'title': u'Test_title_3',
+        'state': u'Test_state_3',
+        'done': False,
+        'owner':1,
+        'start_time':'',
+        'end_time':''
+    
+    },
+    {
+        'id': 7,
+        'title': u'Test_title_3',
+        'state': u'Test_state_3',
+        'done': False,
+        'owner':1,
+        'start_time':'',
+        'end_time':''
+    
+    },
+    {
+        'id': 8,
+        'title': u'Test_title_3',
+        'state': u'Test_state_3',
+        'done': False,
+        'owner':1,
+        'start_time':'',
+        'end_time':''
+    
+    },
+    {
+        'id': 9,
+        'title': u'Test_title_3',
+        'state': u'Test_state_3',
+        'done': False,
+        'owner':1,
+        'start_time':'',
+        'end_time':''
+    
+    },
+    {
+        'id': 10,
+        'title': u'Test_title_3',
+        'state': u'Test_state_3',
+        'done': False,
+        'owner':8,
+        'start_time':'',
+        'end_time':''
+    
+    },
+    {
+        'id': 11,
+        'title': u'Test_title_3',
+        'state': u'Test_state_3',
+        'done': False,
+        'owner':1,
+        'start_time':'',
+        'end_time':''
+    
+    },
+    {
+        'id': 12,
+        'title': u'Test_title_3',
+        'state': u'Test_state_3',
+        'done': False,
+        'owner':1,
+        'start_time':'',
+        'end_time':''
+    
+    },
+    {
+        'id': 13,
+        'title': u'Test_title_3',
+        'state': u'Test_state_3',
+        'done': False,
+        'owner':1,
+        'start_time':'',
+        'end_time':''
+    
+    },
+    {
+        'id': 14,
+        'title': u'Test_title_3',
+        'state': u'Test_state_3',
+        'done': False,
+        'owner':4,
+        'start_time':'',
+        'end_time':''
+    
+    },
+    {
+        'id': 15,
+        'title': u'Test_title_3',
+        'state': u'Test_state_3',
+        'done': False,
+        'owner':1,
+        'start_time':'',
+        'end_time':''
+    
+    },
+    {
+        'id': 16,
+        'title': u'Test_title_3',
+        'state': u'Test_state_3',
+        'done': False,
+        'owner':3,
+        'start_time':'',
+        'end_time':''
+    
+    },
+    {
+        'id': 17,
+        'title': u'Test_title_3',
+        'state': u'Test_state_3',
+        'done': False,
+        'owner':8,
+        'start_time':'',
+        'end_time':''
+    
+    },
+    {
+        'id': 18,
+        'title': u'Test_title_3',
+        'state': u'Test_state_3',
+        'done': False,
+        'owner':4,
+        'start_time':'',
+        'end_time':''
+    
+    },
+    {
+        'id': 19,
+        'title': u'Test_title_3',
+        'state': u'Test_state_3',
+        'done': False,
+        'owner':3,
+        'start_time':'',
+        'end_time':''
+    
+    },
+    {
+        'id': 20,
+        'title': u'Test_title_3',
+        'state': u'Test_state_3',
+        'done': False,
+        'owner':6,
+        'start_time':'',
+        'end_time':''
+    
+    }
+]
+
+users = [
+    {
+        'id':0,
+        'username':'0',
+        'password':'0'
+    },
+    {
+        'id':1,
+        'username':'1',
+        'password':'1'
+    },
+    {
+        'id':2,
+        'username':'2',
+        'password':'2'
+    },
+    {
+        'id':3,
+        'username':'3',
+        'password':'3'
+    },
+    {
+        'id':4,
+        'username':'4',
+        'password':'4'
+    },
+    {
+        'id':5,
+        'username':'5',
+        'password':'5'
+    },
+    {
+        'id':6,
+        'username':'6',
+        'password':'6'
+    },
+    {
+        'id':6,
+        'username':'6',
+        'password':'6'
+    },
+    {
+        'id':7,
+        'username':'7',
+        'password':'7'
+    },
+    {
+        'id':8,
+        'username':'8',
+        'password':'8'
+    }
+]
+
+errors = [
+    {
+        "code":404,
+        "state":"Page Not Found!"
+    },
+    {
+        "code":401,
+        "state":"401"
+    },
+    {
+        "code":402,
+        "state":"402"
+    },
+]
+
+status = [
+    {
+        "code":1,
+        "state":"Delete Successfully!"
+    },
+    {
+        "code":2,
+        "state":"Id No Found!"
+    },
+    {
+        "code":3,
+        "state":"Add Failed!"
+    }
+]
+
