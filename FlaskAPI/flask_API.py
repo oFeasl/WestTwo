@@ -525,7 +525,10 @@ def display_undone_tasks():
     }
     return jsonify(return_Feedback(status=0,message=info,data=tasks_in_this_page))
 
-
+@app.route("/search_task",method=["GET"])
+def search_task():
+    print(request.method)
+    print(request.args)
 #######################查找#########################
 
 
