@@ -3,12 +3,14 @@ from flask.globals import current_app
 from flask.json import jsonify
 from werkzeug.exceptions import abort
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-# from flask_httpauth import HTTPTokenAuth
+
 
 
 app = Flask(__name__)
 
 app.config["SECRET_KEY"] = "dasxrgdsdosainfsakjdasdsahdsaoi78"
+
+
 
 users = [
     {
