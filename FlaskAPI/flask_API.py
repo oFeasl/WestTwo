@@ -525,6 +525,112 @@ def display_tasks():
         "total_data":length
     }
     return jsonify(return_Feedback(status=0,message=info,data=tasks_in_this_page))
+
+@app.route("/display_all_done_tasks",methods=["GET"])
+def display_done_tasks():
+    token_result = judge_token(request.headers)
+    if token_result == False:
+        return jsonify(return_Feedback(status=1,message="Have Not Login",data=""))
+    user_id=token_result['id']
+
+
+    user_tasks=[]
+    for i in tasks:
+        if i["owner"]==user_id and i["done"]==True:
+            user_tasks.append(i)
+
+
+    length=len(user_tasks)
+    peer_page=5
+    max_page=ceil(length/peer_page)
+
+
+    current_page=0
+    if not "page" in request.args:
+        current_page=1
+    else:
+        request_page=int(request.args["page"])
+        current_page=request_page    
+
+    if(current_page>max_page or current_page<1):
+        return jsonify(return_Feedback(status=1,message="Page Out Of Index",data=""))
+
+
+
+    low=((current_page-1)*peer_page+1)
+    up=low+peer_page-1
+
+    tasks_in_this_page=[]
+    for index in range(low,up+1):
+        if(index>length):
+            break
+        tasks_in_this_page.append(user_tasks[index-1])
+
+
+    info={
+        "current_page":current_page,
+        "max_page":max_page,
+        "peer_page":peer_page,
+        "has_next?":current_page<max_page,
+        "has_prev":current_page>1,
+        "total_data":length
+    }
+    return jsonify(return_Feedback(status=0,message=info,data=tasks_in_this_page))
+
+@app.route("/display_all_undone_tasks",methods=["GET"])
+def display_undone_tasks():
+    token_result = judge_token(request.headers)
+    if token_result == False:
+        return jsonify(return_Feedback(status=1,message="Have Not Login",data=""))
+    user_id=token_result['id']
+
+
+    user_tasks=[]
+    for i in tasks:
+        if i["owner"]==user_id and i["done"]==False:
+            user_tasks.append(i)
+
+
+    length=len(user_tasks)
+    peer_page=5
+    max_page=ceil(length/peer_page)
+
+
+    current_page=0
+    if not "page" in request.args:
+        current_page=1
+    else:
+        request_page=int(request.args["page"])
+        current_page=request_page    
+
+    if(current_page>max_page or current_page<1):
+        return jsonify(return_Feedback(status=1,message="Page Out Of Index",data=""))
+
+
+
+    low=((current_page-1)*peer_page+1)
+    up=low+peer_page-1
+
+    tasks_in_this_page=[]
+    for index in range(low,up+1):
+        if(index>length):
+            break
+        tasks_in_this_page.append(user_tasks[index-1])
+
+
+    info={
+        "current_page":current_page,
+        "max_page":max_page,
+        "peer_page":peer_page,
+        "has_next?":current_page<max_page,
+        "has_prev":current_page>1,
+        "total_data":length
+    }
+    return jsonify(return_Feedback(status=0,message=info,data=tasks_in_this_page))
+
+# @app.route("/display_certain_tasks",methods=["GET"])
+# def display_certain_tasks():
+
 #######################查找#########################
 
 
