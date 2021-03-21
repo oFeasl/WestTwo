@@ -261,7 +261,6 @@ def root_all_tasks():
 
 
 
-
 @app.route("/")
 def index():
     token_result = judge_token(request.headers)
