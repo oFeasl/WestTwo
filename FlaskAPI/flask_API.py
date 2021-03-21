@@ -30,6 +30,125 @@ tasks = [
         'state': u'Test_state_3',
         'done': False,
         'owner':2
+    },
+    {
+        'id': 4,
+        'title': u'Test_title_4',
+        'state': u'Test_state_4',
+        'done': False,
+        'owner':3
+    },
+    {
+        'id': 5,
+        'title': u'Test_title_3',
+        'state': u'Test_state_3',
+        'done': False,
+        'owner':7
+    },
+    {
+        'id': 6,
+        'title': u'Test_title_3',
+        'state': u'Test_state_3',
+        'done': False,
+        'owner':6
+    },
+    {
+        'id': 7,
+        'title': u'Test_title_3',
+        'state': u'Test_state_3',
+        'done': False,
+        'owner':5
+    },
+    {
+        'id': 8,
+        'title': u'Test_title_3',
+        'state': u'Test_state_3',
+        'done': False,
+        'owner':4
+    },
+    {
+        'id': 9,
+        'title': u'Test_title_3',
+        'state': u'Test_state_3',
+        'done': False,
+        'owner':2
+    },
+    {
+        'id': 10,
+        'title': u'Test_title_3',
+        'state': u'Test_state_3',
+        'done': False,
+        'owner':8
+    },
+    {
+        'id': 11,
+        'title': u'Test_title_3',
+        'state': u'Test_state_3',
+        'done': False,
+        'owner':7
+    },
+    {
+        'id': 12,
+        'title': u'Test_title_3',
+        'state': u'Test_state_3',
+        'done': False,
+        'owner':6
+    },
+    {
+        'id': 13,
+        'title': u'Test_title_3',
+        'state': u'Test_state_3',
+        'done': False,
+        'owner':5
+    },
+    {
+        'id': 14,
+        'title': u'Test_title_3',
+        'state': u'Test_state_3',
+        'done': False,
+        'owner':4
+    },
+    {
+        'id': 15,
+        'title': u'Test_title_3',
+        'state': u'Test_state_3',
+        'done': False,
+        'owner':1
+    },
+    {
+        'id': 16,
+        'title': u'Test_title_3',
+        'state': u'Test_state_3',
+        'done': False,
+        'owner':3
+    },
+    {
+        'id': 17,
+        'title': u'Test_title_3',
+        'state': u'Test_state_3',
+        'done': False,
+        'owner':8
+    },
+    {
+        'id': 18,
+        'title': u'Test_title_3',
+        'state': u'Test_state_3',
+        'done': False,
+        'owner':4
+    },
+    {
+        'id': 19,
+        'title': u'Test_title_3',
+        'state': u'Test_state_3',
+        'done': False,
+        'owner':3
+    },
+    {
+        'id': 20,
+        'title': u'Test_title_3',
+        'state': u'Test_state_3',
+        'done': False,
+        'owner':6
     }
 ]
 
@@ -49,6 +168,41 @@ users = [
         'id':2,
         'username':'2',
         'password':'2'
+    },
+    {
+        'id':3,
+        'username':'3',
+        'password':'3'
+    },
+    {
+        'id':4,
+        'username':'4',
+        'password':'4'
+    },
+    {
+        'id':5,
+        'username':'5',
+        'password':'5'
+    },
+    {
+        'id':6,
+        'username':'6',
+        'password':'6'
+    },
+    {
+        'id':6,
+        'username':'6',
+        'password':'6'
+    },
+    {
+        'id':7,
+        'username':'7',
+        'password':'7'
+    },
+    {
+        'id':8,
+        'username':'8',
+        'password':'8'
     }
 ]
 
@@ -171,13 +325,12 @@ def del_all_undone():
 
 
 
-@app.route("/get")
+@app.route("/get",methods=["GET"])
 def get():
-    print(request.method)
-    print(request.json)
-    print(request.headers)
-    print(request.host)
-    print(request.url)
+    page=0
+    if not "page" in request.args:
+        page=1
+    return 
 
 
 
@@ -293,7 +446,7 @@ def display_tasks():
     for i in tasks:
         if i['owner'] == user_id:
             my_tasks.append(i)
-    return jsonify(my_tasks)
+    return jsonify(return_Feedback(status=0,message="Success",data={"tasks":my_tasks,"page":1}))
 
 
 
