@@ -4,6 +4,7 @@ from flask.json import jsonify
 from werkzeug.exceptions import abort
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from math import ceil
+import time
 
 
 app = Flask(__name__)
@@ -17,7 +18,8 @@ tasks = [
         'state': u'Milk, Cheese, Pizza, Fruit, Tylenol',
         'done': False,
         'owner':1,
-        'time':''
+        'start_time':'',
+        'end_time':''
     },
     {
         'id': 2,
@@ -25,7 +27,8 @@ tasks = [
         'state': u'Need to find a good Python tutorial on the web',
         'done': False,
         'owner':1,
-        'time':''
+        'start_time':'',
+        'end_time':''
     },
     {
         'id': 3,
@@ -33,7 +36,8 @@ tasks = [
         'state': u'Test_state_3',
         'done': False,
         'owner':1,
-        'time':''
+        'start_time':'',
+        'end_time':''
     
     },
     {
@@ -42,7 +46,8 @@ tasks = [
         'state': u'Test_state_4',
         'done': False,
         'owner':3,
-        'time':''
+        'start_time':'',
+        'end_time':''
     
     },
     {
@@ -51,7 +56,8 @@ tasks = [
         'state': u'Test_state_3',
         'done': False,
         'owner':1,
-        'time':''
+        'start_time':'',
+        'end_time':''
     
     },
     {
@@ -60,7 +66,8 @@ tasks = [
         'state': u'Test_state_3',
         'done': False,
         'owner':1,
-        'time':''
+        'start_time':'',
+        'end_time':''
     
     },
     {
@@ -69,7 +76,8 @@ tasks = [
         'state': u'Test_state_3',
         'done': False,
         'owner':1,
-        'time':''
+        'start_time':'',
+        'end_time':''
     
     },
     {
@@ -78,7 +86,8 @@ tasks = [
         'state': u'Test_state_3',
         'done': False,
         'owner':1,
-        'time':''
+        'start_time':'',
+        'end_time':''
     
     },
     {
@@ -87,7 +96,8 @@ tasks = [
         'state': u'Test_state_3',
         'done': False,
         'owner':1,
-        'time':''
+        'start_time':'',
+        'end_time':''
     
     },
     {
@@ -96,7 +106,8 @@ tasks = [
         'state': u'Test_state_3',
         'done': False,
         'owner':8,
-        'time':''
+        'start_time':'',
+        'end_time':''
     
     },
     {
@@ -105,7 +116,8 @@ tasks = [
         'state': u'Test_state_3',
         'done': False,
         'owner':1,
-        'time':''
+        'start_time':'',
+        'end_time':''
     
     },
     {
@@ -114,7 +126,8 @@ tasks = [
         'state': u'Test_state_3',
         'done': False,
         'owner':1,
-        'time':''
+        'start_time':'',
+        'end_time':''
     
     },
     {
@@ -123,7 +136,8 @@ tasks = [
         'state': u'Test_state_3',
         'done': False,
         'owner':1,
-        'time':''
+        'start_time':'',
+        'end_time':''
     
     },
     {
@@ -132,7 +146,8 @@ tasks = [
         'state': u'Test_state_3',
         'done': False,
         'owner':4,
-        'time':''
+        'start_time':'',
+        'end_time':''
     
     },
     {
@@ -141,7 +156,8 @@ tasks = [
         'state': u'Test_state_3',
         'done': False,
         'owner':1,
-        'time':''
+        'start_time':'',
+        'end_time':''
     
     },
     {
@@ -150,7 +166,8 @@ tasks = [
         'state': u'Test_state_3',
         'done': False,
         'owner':3,
-        'time':''
+        'start_time':'',
+        'end_time':''
     
     },
     {
@@ -159,7 +176,8 @@ tasks = [
         'state': u'Test_state_3',
         'done': False,
         'owner':8,
-        'time':''
+        'start_time':'',
+        'end_time':''
     
     },
     {
@@ -168,7 +186,8 @@ tasks = [
         'state': u'Test_state_3',
         'done': False,
         'owner':4,
-        'time':''
+        'start_time':'',
+        'end_time':''
     
     },
     {
@@ -177,7 +196,8 @@ tasks = [
         'state': u'Test_state_3',
         'done': False,
         'owner':3,
-        'time':''
+        'start_time':'',
+        'end_time':''
     
     },
     {
@@ -186,7 +206,8 @@ tasks = [
         'state': u'Test_state_3',
         'done': False,
         'owner':6,
-        'time':''
+        'start_time':'',
+        'end_time':''
     
     }
 ]
@@ -426,12 +447,19 @@ def add_task():
 
     if not request.json or not 'title' in request.json:
         return jsonify(status[2])
+    
+    year = (time.localtime(time.time()).tm_year)
+    month = (time.localtime(time.time()).tm_mon)
+    day = (time.localtime(time.time()).tm_mday)
+    current_time = (str)(year)+"."+(str)(month)+"."+(str)(day)    
+    
     task={
         "id":tasks[-1]["id"]+1,
         "title":request.json["title"],
         'state': request.json.get("state", ""),
         "done":False,
-        "owner":user_id
+        "owner":user_id,
+        "time":current_time
     }
     tasks.append(task)
     return jsonify(return_Feedback(status=0,message="",data=task))
