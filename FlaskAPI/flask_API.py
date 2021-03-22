@@ -1,3 +1,7 @@
+# Fzu
+# +F
+
+
 from flask import Flask
 from flask import json
 from flask.globals import request
@@ -574,7 +578,7 @@ def search_task():
 
 def query(task,keys_list,args_dict):
     for i in keys_list:
-        if task[i]!=args_dict[i]:
+        if (str)(task[i])!=args_dict[i]:
             return False
     return True
 
