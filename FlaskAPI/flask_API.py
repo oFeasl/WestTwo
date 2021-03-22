@@ -1,6 +1,8 @@
 from flask import Flask
+from flask import json
 from flask.globals import request
 from flask.json import jsonify
+from flask.wrappers import Response
 from werkzeug.exceptions import abort
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from math import ceil
@@ -14,8 +16,8 @@ app.config["SECRET_KEY"] = "dsaiwe982nzcxsa79e812dsa"
 tasks = [
     {
         'id': 1,
-        'title': u'Buy groceries',
-        'state': u'Milk, Cheese, Pizza, Fruit, Tylenol',
+        'title': 'Buy groceries',
+        'state': 'Milk, Cheese, Pizza, Fruit, Tylenol',
         'done': False,
         'owner':1,
         'start_time':'2019.1.1',
@@ -23,8 +25,8 @@ tasks = [
     },
     {
         'id': 2,
-        'title': u'Learn Python',
-        'state': u'Need to find a good Python tutorial on the web',
+        'title': 'Learn Python',
+        'state': 'Need to find a good Python tutorial on the web',
         'done': False,
         'owner':1,
         'start_time':'2019.2.1',
@@ -32,10 +34,28 @@ tasks = [
     },
     {
         'id': 3,
-        'title': u'Test_title_3',
-        'state': u'Test_state_3',
+        'title': 'Test_title_3',
+        'state': 'Test_state_3',
         'done': False,
-        'owner':2,
+        'owner':1,
+        'start_time':'2019.3.1',
+        'end_time':'2019.3.2'
+    },
+    {
+        'id': 4,
+        'title': 'Test_title_3',
+        'state': 'Test_state_33333',
+        'done': False,
+        'owner':1,
+        'start_time':'2019.3.1',
+        'end_time':'2019.3.2'
+    },
+    {
+        'id': 5,
+        'title': 'Test_title_3',
+        'state': 'Tsssss333',
+        'done': False,
+        'owner':1,
         'start_time':'2019.3.1',
         'end_time':'2019.3.2'
     }
@@ -525,14 +545,39 @@ def display_undone_tasks():
     }
     return jsonify(return_Feedback(status=0,message=info,data=tasks_in_this_page))
 
-@app.route("/search_task",methods=["GET"])
+@app.route("/search_task/query",methods=["GET"])
 def search_task():
-    print(request.method)
-    print(request.args)
-    print(type(request.args.keys()))
-    for i in request.args.keys():
-        print(i)
-    return "hh"
+    token_result = judge_token(request.headers)
+    if token_result == False:
+        return jsonify(return_Feedback(status=1,message="Have Not Login",data=""))
+    user_id=token_result['id']
+
+    args_dict=request.args.to_dict()
+    keys_list = list(args_dict.keys())
+
+    print(user_id)
+    print(args_dict)
+    print(keys_list)
+    print()
+    print()
+
+    response=[]
+
+    for i in tasks:
+        if (i["owner"] == user_id) and query(task=i, keys_list=keys_list, args_dict=args_dict):
+            response.append(i)
+    # return ((str)((type)(response)))
+    if len(response)==0:
+        return "Empty"
+    else:
+        return jsonify(response)
+
+def query(task,keys_list,args_dict):
+    for i in keys_list:
+        if task[i]!=args_dict[i]:
+            return False
+    return True
+
 #######################查找#########################
 
 
