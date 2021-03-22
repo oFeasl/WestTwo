@@ -3,7 +3,6 @@
 
 
 from flask import Flask
-from flask import json
 from flask.globals import request
 from flask.json import jsonify
 from flask.wrappers import Response
@@ -560,14 +559,8 @@ def search_task():
     args_dict=request.args.to_dict()
     keys_list = list(args_dict.keys())
 
-    print(user_id)
-    print(args_dict)
-    print(keys_list)
-    print()
-    print()
 
     response=[]
-
     for i in tasks:
         if (i["owner"] == user_id) and query(task=i, keys_list=keys_list, args_dict=args_dict):
             response.append(i)
