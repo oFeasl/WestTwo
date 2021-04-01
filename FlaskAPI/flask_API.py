@@ -10,7 +10,7 @@ from werkzeug.exceptions import abort
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from math import ceil
 import time
-
+import redis
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "dsaiwe982nzcxsa79e812dsa"
@@ -350,6 +350,7 @@ def set_all_undone_():
 #######################查找#########################
 @app.route("/display_all_tasks",methods=["GET"])
 def display_tasks():
+    conn.set(conn.info().get("db1")['keys']+1,"Search_All")
     token_result = judge_token(request.headers)
     if token_result == False:
         return jsonify(return_Feedback(status=1,message="Have Not Login",data=""))
@@ -401,6 +402,7 @@ def display_tasks():
 
 @app.route("/display_all_done_tasks",methods=["GET"])
 def display_done_tasks():
+    conn.set(conn.info().get("db1")['keys']+1,"Search_All_Done")
     token_result = judge_token(request.headers)
     if token_result == False:
         return jsonify(return_Feedback(status=1,message="Have Not Login",data=""))
@@ -452,6 +454,7 @@ def display_done_tasks():
 
 @app.route("/display_all_undone_tasks",methods=["GET"])
 def display_undone_tasks():
+    conn.set(conn.info().get("db1")['keys']+1,"Search_All_Undone")
     token_result = judge_token(request.headers)
     if token_result == False:
         return jsonify(return_Feedback(status=1,message="Have Not Login",data=""))
@@ -503,6 +506,7 @@ def display_undone_tasks():
 
 @app.route("/search_task/query",methods=["GET"])
 def search_task():
+    conn.set(conn.info().get("db1")['keys']+1,"Search_Query")
     token_result = judge_token(request.headers)
     if token_result == False:
         return jsonify(return_Feedback(status=1,message="Have Not Login",data=""))
@@ -512,18 +516,56 @@ def search_task():
     keys_list = list(args_dict.keys())
 
 
-    response=[]
+    user_tasks=[]
     for i in tasks:
         if (i["owner"] == user_id) and query(task=i, keys_list=keys_list, args_dict=args_dict):
-            response.append(i)
-    # return ((str)((type)(response)))
-    if len(response)==0:
+            user_tasks.append(i)
+    if len(user_tasks)==0:
         return "Empty"
     else:
         # 分页
+        length=len(user_tasks)
+        peer_page=5
+        max_page=ceil(length/peer_page)
 
 
-        return jsonify(response)
+        current_page=0
+        if not "page" in request.args:
+            current_page=1
+        else:
+            request_page=int(request.args["page"])
+            current_page=request_page    
+
+        if(current_page>max_page or current_page<1):
+            return jsonify(return_Feedback(status=1,message="Page Out Of Index",data=""))
+
+
+
+        low=((current_page-1)*peer_page+1)
+        up=low+peer_page-1
+
+        tasks_in_this_page=[]
+        for index in range(low,up+1):
+            if(index>length):
+                break
+            tasks_in_this_page.append(user_tasks[index-1])
+
+
+        info={
+            "current_page":current_page,
+            "max_page":max_page,
+            "peer_page":peer_page,
+            "has_next?":current_page<max_page,
+            "has_prev":current_page>1,
+            "total_data":length
+        }
+        return jsonify(return_Feedback(status=0,message=info,data=tasks_in_this_page))
+
+@app.route("/history",methods=["GET"])
+def history():
+    for i in range((conn.info().get("db1")['keys']),0,-1):
+        print(conn.get(name=i))
+    return "History"
 
 def query(task,keys_list,args_dict):
     for i in keys_list:
@@ -606,4 +648,5 @@ def return_Feedback(status,message,data):
     return Feedback
 
 if __name__=="__main__":
+    conn=redis.Redis(host='127.0.0.1',port=6379,db=1)
     app.run(debug=1)
