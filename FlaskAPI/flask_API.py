@@ -350,12 +350,13 @@ def set_all_undone_():
 #######################查找#########################
 @app.route("/display_all_tasks",methods=["GET"])
 def display_tasks():
-    conn.set(conn.info().get("db1")['keys']+1,"Search_All")
     token_result = judge_token(request.headers)
     if token_result == False:
         return jsonify(return_Feedback(status=1,message="Have Not Login",data=""))
     user_id=token_result['id']
 
+    conn.append(user_id,"Search_All/")
+    
 
     user_tasks=[]
     for i in tasks:
@@ -402,12 +403,12 @@ def display_tasks():
 
 @app.route("/display_all_done_tasks",methods=["GET"])
 def display_done_tasks():
-    conn.set(conn.info().get("db1")['keys']+1,"Search_All_Done")
     token_result = judge_token(request.headers)
     if token_result == False:
         return jsonify(return_Feedback(status=1,message="Have Not Login",data=""))
     user_id=token_result['id']
 
+    conn.append(user_id,"Search_All_Done/")
 
     user_tasks=[]
     for i in tasks:
@@ -454,12 +455,12 @@ def display_done_tasks():
 
 @app.route("/display_all_undone_tasks",methods=["GET"])
 def display_undone_tasks():
-    conn.set(conn.info().get("db1")['keys']+1,"Search_All_Undone")
     token_result = judge_token(request.headers)
     if token_result == False:
         return jsonify(return_Feedback(status=1,message="Have Not Login",data=""))
     user_id=token_result['id']
 
+    conn.append(user_id,"Search_All_Undone/")
 
     user_tasks=[]
     for i in tasks:
@@ -506,11 +507,12 @@ def display_undone_tasks():
 
 @app.route("/search_task/query",methods=["GET"])
 def search_task():
-    conn.set(conn.info().get("db1")['keys']+1,"Search_Query")
     token_result = judge_token(request.headers)
     if token_result == False:
         return jsonify(return_Feedback(status=1,message="Have Not Login",data=""))
     user_id=token_result['id']
+
+    conn.append(user_id,"Search_By_Query/")
 
     args_dict=request.args.to_dict()
     keys_list = list(args_dict.keys())
@@ -563,9 +565,15 @@ def search_task():
 
 @app.route("/history",methods=["GET"])
 def history():
-    for i in range((conn.info().get("db1")['keys']),0,-1):
-        print(conn.get(name=i))
-    return "History"
+    token_result = judge_token(request.headers)
+    if token_result == False:
+        return jsonify(return_Feedback(status=1,message="Have Not Login",data=""))
+    user_id=token_result['id']
+
+
+    temp_list = conn.get(name=(str)(user_id)).split('/')
+    print(temp_list)
+    return "Test"
 
 def query(task,keys_list,args_dict):
     for i in keys_list:
@@ -648,5 +656,5 @@ def return_Feedback(status,message,data):
     return Feedback
 
 if __name__=="__main__":
-    conn=redis.Redis(host='127.0.0.1',port=6379,db=1)
+    conn=redis.Redis(host='127.0.0.1',port=6379,db=1,decode_responses=True)
     app.run(debug=1)
