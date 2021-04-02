@@ -3,6 +3,7 @@
 
 
 from flask import Flask
+from flask import json
 from flask.globals import request
 from flask.json import jsonify
 from flask.wrappers import Response
@@ -572,7 +573,34 @@ def history():
 
 
     temp_list = conn.get(name=(str)(user_id)).split('/')
+    # print(temp_list)
+    print(len(temp_list))
+
+    list_length = len(temp_list)
+
+    begin_index = list_length-2
+
+    historys = []
+
+    aString = ""
+
+    if list_length>11:
+        for i in range(begin_index, begin_index-10, -1):
+            historys.append(temp_list[i])
+            aString+=temp_list[i]+"/"
+            conn.set(1,aString)
+    else:
+        for i in range(begin_index,-1, -1):
+            historys.append(temp_list[i])
+        
+    return jsonify(return_Feedback(status=0, message="",data=historys))
+
+@app.route("/history_without_limit",methods=["GET"])
+def all_history():
+    # keys = conn.keys()
+    temp_list = conn.get(name=(str)(1)).split("/")
     print(temp_list)
+    print(len(temp_list))
     return "Test"
 
 def query(task,keys_list,args_dict):
