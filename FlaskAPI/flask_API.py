@@ -578,17 +578,20 @@ def history():
 
     list_length = len(temp_list)
 
-    begin_index = list_length-2
+    begin_index = list_length-1
 
     historys = []
 
     aString = ""
 
+    # 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14
+
     if list_length>11:
-        for i in range(begin_index, begin_index-10, -1):
+        for i in range(list_length-11, list_length-1):
             historys.append(temp_list[i])
             aString+=temp_list[i]+"/"
             conn.set(1,aString)
+        historys.reverse()
     else:
         for i in range(begin_index,-1, -1):
             historys.append(temp_list[i])
