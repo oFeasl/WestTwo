@@ -149,37 +149,6 @@ status = [
 ]
 
 
-#####################调试路由###########################
-@app.route('/api/v1/root/all_users')
-def root_all_users():
-    token_result = judge_token(request.headers)
-    if token_result == False:
-        return jsonify(return_Feedback(status=1,message="Have Not Login",data=""))
-    user_id=token_result['id']
-    if (user_id!=0):
-        abort(401)
-    return jsonify(return_Feedback(status=0,message="Welcome Root",data=users))
-
-@app.route('/api/v1/root/all_tasks')
-def root_all_tasks():
-    token_result = judge_token(request.headers)
-    if token_result == False:
-        return jsonify(return_Feedback(status=1,message="Have Not Login",data=""))
-    user_id=token_result['id']
-    if (user_id!=0):
-        abort(401)
-    return jsonify(return_Feedback(status=0,message="Welcome Root",data=tasks))
-#####################调试路由###########################
-
-
-
-@app.route("/")
-def index():
-    token_result = judge_token(request.headers)
-    
-    abort(404)
-
-
 @app.route("/api/v1/get",methods=["GET"])
 def get():
     return "addr:"+str(request.remote_addr)+"user:"+str(request.remote_user)+"1:"+str(request.args)+"  2:"+str(request.host)+"  3:"+str(request.host_url)+"  4:"+str(request.base_url)+"  5:"+str(request.full_path)+"  6:"+str(request.url_root)+"  7:"+str(request.url_rule)+"  8:"+str(request.trusted_hosts)+"  9:"+str(request.method)+"  10:"+str(request.url)+"  11:"+str(request)
@@ -190,7 +159,7 @@ def get():
 def del_task(id):
     token_result = judge_token(request.headers)
     if token_result == False:
-        return jsonify(return_Feedback(status=1,message="Have Not Login",data=""))
+        return jsonify(return_Feedback(status=4,message="Have Not Login",data=""))
     user_id=token_result['id']
 
 
@@ -199,7 +168,7 @@ def del_task(id):
             del_task = i
             tasks.remove(i)
             return jsonify(return_Feedback(status=0,message="Delete Successfully",data=del_task))
-    return jsonify(return_Feedback(status=1,message="Delete Failed Id Not Found",data=""))
+    return jsonify(return_Feedback(status=6,message="Delete Failed,Id Not Found",data=""))
 
 
 # 删除所有已完成事项
@@ -207,7 +176,7 @@ def del_task(id):
 def del_all_done():
     token_result = judge_token(request.headers)
     if token_result == False:
-        return jsonify(return_Feedback(status=1,message="Have Not Login",data=""))
+        return jsonify(return_Feedback(status=4,message="Have Not Login",data=""))
     user_id=token_result['id']
 
     temp_task1 = []
@@ -224,7 +193,7 @@ def del_all_done():
 def del_all_undone():
     token_result = judge_token(request.headers)
     if token_result == False:
-        return jsonify(return_Feedback(status=1,message="Have Not Login",data=""))
+        return jsonify(return_Feedback(status=4,message="Have Not Login",data=""))
     user_id=token_result['id']
 
 
@@ -248,12 +217,12 @@ def del_all_undone():
 def add_task():
     token_result = judge_token(request.headers)
     if token_result == False:
-        return jsonify(return_Feedback(status=1,message="Have Not Login",data=""))
+        return jsonify(return_Feedback(status=4,message="Have Not Login",data=""))
     user_id=token_result['id']
 
 
     if not request.json or not 'title' in request.json:
-        return jsonify(return_Feedback(status=1,message="Not Title In Your Request",data=""))
+        return jsonify(return_Feedback(status=5,message="Not Title In Your Request",data=""))
     
     year = (time.localtime(time.time()).tm_year)
     month = (time.localtime(time.time()).tm_mon)
@@ -287,7 +256,7 @@ def add_task():
 def set_a_done_(id):
     token_result = judge_token(request.headers)
     if token_result == False:
-        return jsonify(return_Feedback(status=1,message="Have Not Login",data=""))
+        return jsonify(return_Feedback(status=4,message="Have Not Login",data=""))
     user_id=token_result['id']
 
 
@@ -296,14 +265,14 @@ def set_a_done_(id):
         if i["id"] == id and i["owner"]==user_id:
             i["done"] = True
             return jsonify(return_Feedback(status=0,message="Change Successfully",data=i))
-    return jsonify(return_Feedback(status=1,message="Id Not Found",data=""))
+    return jsonify(return_Feedback(status=6,message="Id Not Found",data=""))
 
 # 将1条task设为待办
 @app.route("/api/v1/set_a_undone/<int:id>",methods=["PUT"])
 def set_a_undone_(id):
     token_result = judge_token(request.headers)
     if token_result == False:
-        return jsonify(return_Feedback(status=1,message="Have Not Login",data=""))
+        return jsonify(return_Feedback(status=4,message="Have Not Login",data=""))
     user_id=token_result['id']
 
 
@@ -312,14 +281,14 @@ def set_a_undone_(id):
         if i["id"] == id and i["owner"]==user_id:
             i["done"] = False
             return jsonify(return_Feedback(status=0,message="Change Successfully",data=i))
-    return jsonify(return_Feedback(status=1,message="Id Not Found",data=""))
+    return jsonify(return_Feedback(status=6,message="Id Not Found",data=""))
 
 # 将所有task设为已办
 @app.route("/api/v1/set_all_done",methods=["PUT"])
 def set_all_done_():
     token_result = judge_token(request.headers)
     if token_result == False:
-        return jsonify(return_Feedback(status=1,message="Have Not Login",data=""))
+        return jsonify(return_Feedback(status=4,message="Have Not Login",data=""))
     user_id=token_result['id']
 
 
@@ -334,7 +303,7 @@ def set_all_done_():
 def set_all_undone_():
     token_result = judge_token(request.headers)
     if token_result == False:
-        return jsonify(return_Feedback(status=1,message="Have Not Login",data=""))
+        return jsonify(return_Feedback(status=4,message="Have Not Login",data=""))
     user_id=token_result['id']
 
 
@@ -354,7 +323,7 @@ def set_all_undone_():
 def display_tasks():
     token_result = judge_token(request.headers)
     if token_result == False:
-        return jsonify(return_Feedback(status=1,message="Have Not Login",data=""))
+        return jsonify(return_Feedback(status=4,message="Have Not Login",data=""))
     user_id=token_result['id']
 
     conn.append(user_id,"Search_All/")
@@ -369,7 +338,7 @@ def display_tasks():
     length=len(user_tasks)
 
     if length==0:
-        return jsonify(return_Feedback(status=1,message="No Data",data=""))
+        return jsonify(return_Feedback(status=7,message="No Data",data=""))
 
     peer_page=5
     max_page=ceil(length/peer_page)
@@ -383,7 +352,7 @@ def display_tasks():
         current_page=request_page    
 
     if(current_page>max_page or current_page<1):
-        return jsonify(return_Feedback(status=1,message="Page Out Of Index",data=""))
+        return jsonify(return_Feedback(status=8,message="Page Out Of Index",data=""))
 
 
 
@@ -411,7 +380,7 @@ def display_tasks():
 def display_done_tasks():
     token_result = judge_token(request.headers)
     if token_result == False:
-        return jsonify(return_Feedback(status=1,message="Have Not Login",data=""))
+        return jsonify(return_Feedback(status=4,message="Have Not Login",data=""))
     user_id=token_result['id']
 
     conn.append(user_id,"Search_All_Done/")
@@ -426,7 +395,7 @@ def display_done_tasks():
     length=len(user_tasks)
     
     if length==0:
-        return jsonify(return_Feedback(status=1,message="No Data",data=""))
+        return jsonify(return_Feedback(status=7,message="No Data",data=""))
         
 
     peer_page=5
@@ -441,7 +410,7 @@ def display_done_tasks():
         current_page=request_page    
 
     if(current_page>max_page or current_page<1):
-        return jsonify(return_Feedback(status=1,message="Page Out Of Index",data=""))
+        return jsonify(return_Feedback(status=8,message="Page Out Of Index",data=""))
 
 
 
@@ -469,7 +438,7 @@ def display_done_tasks():
 def display_undone_tasks():
     token_result = judge_token(request.headers)
     if token_result == False:
-        return jsonify(return_Feedback(status=1,message="Have Not Login",data=""))
+        return jsonify(return_Feedback(status=4,message="Have Not Login",data=""))
     user_id=token_result['id']
 
     conn.append(user_id,"Search_All_Undone/")
@@ -483,7 +452,7 @@ def display_undone_tasks():
     length=len(user_tasks)
  
     if length==0:
-        return jsonify(return_Feedback(status=1,message="No Data",data=""))
+        return jsonify(return_Feedback(status=7,message="No Data",data=""))
  
     peer_page=5
     max_page=ceil(length/peer_page)
@@ -497,7 +466,7 @@ def display_undone_tasks():
         current_page=request_page    
 
     if(current_page>max_page or current_page<1):
-        return jsonify(return_Feedback(status=1,message="Page Out Of Index",data=""))
+        return jsonify(return_Feedback(status=8,message="Page Out Of Index",data=""))
 
 
 
@@ -525,7 +494,7 @@ def display_undone_tasks():
 def search_task():
     token_result = judge_token(request.headers)
     if token_result == False:
-        return jsonify(return_Feedback(status=1,message="Have Not Login",data=""))
+        return jsonify(return_Feedback(status=4,message="Have Not Login",data=""))
     user_id=token_result['id']
 
     conn.append(user_id,"Search_By_Query/")
@@ -539,7 +508,7 @@ def search_task():
         if (i["owner"] == user_id) and query(task=i, keys_list=keys_list, args_dict=args_dict):
             user_tasks.append(i)
     if len(user_tasks)==0:
-        return jsonify(return_Feedback(status=1,message="No Data",data=""))
+        return jsonify(return_Feedback(status=7,message="No Data",data=""))
     else:
         # 分页
         length=len(user_tasks)
@@ -555,7 +524,7 @@ def search_task():
             current_page=request_page    
 
         if(current_page>max_page or current_page<1):
-            return jsonify(return_Feedback(status=1,message="Page Out Of Index",data=""))
+            return jsonify(return_Feedback(status=8,message="Page Out Of Index",data=""))
 
 
 
@@ -583,13 +552,13 @@ def search_task():
 def history():
     token_result = judge_token(request.headers)
     if token_result == False:
-        return jsonify(return_Feedback(status=1,message="Have Not Login",data=""))
+        return jsonify(return_Feedback(status=4,message="Have Not Login",data=""))
     user_id=token_result['id']
 
     try:
         temp_list = conn.get(name=(str)(user_id)).split('/')
     except:
-        return jsonify(return_Feedback(status=1,message="No History",data=""))
+        return jsonify(return_Feedback(status=9,message="No History",data=""))
     # print(temp_list)
     print(len(temp_list))
 
@@ -624,10 +593,10 @@ def query(task,keys_list,args_dict):
 
 
 #######################注册#########################
-@app.route("/api/v1/regist",methods=["POST"])
+@app.route("/api/v1/user/regist",methods=["POST"])
 def regist():
     if not request.json or not "username" in request.json or not "password" in request.json:
-        abort(400)
+        return jsonify(return_Feedback(status=1,message="Regist Form Error",data=""))
     user_id = users[-1]['id']+1
     user_username = request.json['username']
     user_password = request.json['password']
@@ -648,15 +617,15 @@ def regist():
 
 #######################登录#########################
 # 登录接口
-@app.route("/api/v1/login",methods=["POST"])
+@app.route("/api/v1/user/login",methods=["POST"])
 def login():
     print(request.json)
     if not request.json or not "username" in request.json or not "password" in request.json:# 格式错误
-        return jsonify(return_Feedback(status=1,message="Form Error",data=""))
+        return jsonify(return_Feedback(status=2,message="Form Error",data=""))
     for i in users:# 遍历用户列表
         if i["username"] == request.json["username"] and i["password"] == request.json["password"]:
-            return {"user":request.json,"token":get_token(user_id=i["id"],user_name=i["username"],user_pwd=i["password"])} # 认证成功
-    return jsonify(return_Feedback(status=1,message="Login Error User Not Found",data=""))# 没有这个用户
+            return jsonify(return_Feedback(status=0,message="Login Successfully",data={"user":request.json,"token":get_token(user_id=i["id"],user_name=i["username"],user_pwd=i["password"])})) # 认证成功
+    return jsonify(return_Feedback(status=3,message="Username Or Password Error",data=""))# 没有这个用户
     
 # 返回token
 def get_token(user_id,user_name,user_pwd):
