@@ -366,6 +366,10 @@ def display_tasks():
 
 
     length=len(user_tasks)
+
+    if length==0:
+        return jsonify(return_Feedback(status=1,message="No Data",data=""))
+
     peer_page=5
     max_page=ceil(length/peer_page)
 
@@ -417,7 +421,13 @@ def display_done_tasks():
             user_tasks.append(i)
 
 
+
     length=len(user_tasks)
+    
+    if length==0:
+        return jsonify(return_Feedback(status=1,message="No Data",data=""))
+        
+
     peer_page=5
     max_page=ceil(length/peer_page)
 
@@ -470,6 +480,10 @@ def display_undone_tasks():
 
 
     length=len(user_tasks)
+ 
+    if length==0:
+        return jsonify(return_Feedback(status=1,message="No Data",data=""))
+ 
     peer_page=5
     max_page=ceil(length/peer_page)
 
@@ -571,14 +585,14 @@ def history():
         return jsonify(return_Feedback(status=1,message="Have Not Login",data=""))
     user_id=token_result['id']
 
-
-    temp_list = conn.get(name=(str)(user_id)).split('/')
+    try:
+        temp_list = conn.get(name=(str)(user_id)).split('/')
+    except:
+        return jsonify(return_Feedback(status=1,message="No History",data=""))
     # print(temp_list)
     print(len(temp_list))
 
     list_length = len(temp_list)
-
-    begin_index = list_length-1
 
     historys = []
 
@@ -593,18 +607,10 @@ def history():
             conn.set(1,aString)
         historys.reverse()
     else:
-        for i in range(begin_index,-1, -1):
+        for i in range(list_length-2,-1, -1):
             historys.append(temp_list[i])
         
     return jsonify(return_Feedback(status=0, message="",data=historys))
-
-@app.route("/history_without_limit",methods=["GET"])
-def all_history():
-    # keys = conn.keys()
-    temp_list = conn.get(name=(str)(1)).split("/")
-    print(temp_list)
-    print(len(temp_list))
-    return "Test"
 
 def query(task,keys_list,args_dict):
     for i in keys_list:
