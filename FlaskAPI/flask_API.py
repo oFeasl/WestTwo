@@ -170,7 +170,6 @@ def del_task(id):
             return jsonify(return_Feedback(status=0,message="Delete Successfully",data=del_task))
     return jsonify(return_Feedback(status=6,message="Delete Failed,Id Not Found",data=""))
 
-
 # 删除所有已完成事项
 @app.route("/api/v1/del_all_done",methods=["DELETE"])
 def del_all_done():
@@ -186,7 +185,6 @@ def del_all_done():
     for j in temp_task1:
         tasks.remove(j)
     return jsonify(return_Feedback(status=0,message="Delete Successfully",data=temp_task1))
-
 
 # 删除所有已代办事项
 @app.route("/api/v1/del_all_undone",methods=["DELETE"])
@@ -205,9 +203,6 @@ def del_all_undone():
         tasks.remove(j)
     return jsonify(return_Feedback(status=0,message="Delete Successfully",data=temp_task2))
 #######################删除#########################
-
-
-
 
 
 
@@ -242,11 +237,6 @@ def add_task():
     # print(tasks)
     return jsonify(return_Feedback(status=0,message="Add Successfully",data=task))
 #######################新增#########################
-
-
-
-
-
 
 
 
@@ -313,8 +303,6 @@ def set_all_undone_():
             i["done"]=False
     return jsonify(return_Feedback(status=0,message="Change Successfully",data=""))
 #######################更改#########################
-
-
 
 
 
@@ -591,7 +579,6 @@ def query(task,keys_list,args_dict):
 
 
 
-
 #######################注册#########################
 @app.route("/api/v1/user/regist",methods=["POST"])
 def regist():
@@ -610,8 +597,6 @@ def regist():
     users.append(user)
     return jsonify(return_Feedback(status=0,message="Regist Successfully",data=user))
 #######################注册#########################
-
-
 
 
 
